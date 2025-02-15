@@ -3,52 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Whataburger Nutrition Calculator</title>
+    <title>Whataburger Nutritional Calculator</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 400px; margin: auto; text-align: center; }
-        button { margin-top: 10px; padding: 10px; cursor: pointer; }
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        #calculator { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        select, input, button { margin: 10px; padding: 10px; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Whataburger Nutrition Calculator</h1>
-        <p>Select your menu items:</p>
-        <select id="menuItems" multiple>
-            <option value="Whataburger">Whataburger</option>
-            <option value="Whataburger Jr.">Whataburger Jr.</option>
-            <option value="French Fries">French Fries</option>
-            <option value="Onion Rings">Onion Rings</option>
-            <option value="Dr Pepper Shake">Dr Pepper Shake</option>
+    <h2>Whataburger Nutritional Calculator</h2>
+    <div id="calculator">
+        <label for="item">Select Your Item:</label>
+        <select id="item">
+            <option value="burger" data-calories="600">Whataburger - 600 Calories</option>
+            <option value="fries" data-calories="420">Fries - 420 Calories</option>
+            <option value="drink" data-calories="200">Soft Drink - 200 Calories</option>
         </select>
-        <button onclick="calculateNutrition()">Calculate</button>
-        <h2>Total Nutrition</h2>
-        <pre id="result"></pre>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" value="1" min="1">
+
+        <button onclick="calculate()">Calculate</button>
+        <h3>Total Calories: <span id="result">0</span></h3>
     </div>
 
     <script>
-        const menu = {
-            "Whataburger": { calories: 590, fat: 25, protein: 30, carbs: 65 },
-            "Whataburger Jr.": { calories: 310, fat: 14, protein: 14, carbs: 33 },
-            "French Fries": { calories: 420, fat: 20, protein: 5, carbs: 55 },
-            "Onion Rings": { calories: 530, fat: 29, protein: 6, carbs: 62 },
-            "Dr Pepper Shake": { calories: 590, fat: 22, protein: 12, carbs: 85 }
-        };
+        function calculate() {
+            let item = document.getElementById("item");
+            let calories = parseInt(item.options[item.selectedIndex].getAttribute("data-calories"));
+            let quantity = parseInt(document.getElementById("quantity").value);
+            let totalCalories = calories * quantity;
 
-        function calculateNutrition() {
-            let selectedItems = Array.from(document.getElementById('menuItems').selectedOptions).map(option => option.value);
-            let totalNutrition = { calories: 0, fat: 0, protein: 0, carbs: 0 };
-
-            selectedItems.forEach(item => {
-                if (menu[item]) {
-                    totalNutrition.calories += menu[item].calories;
-                    totalNutrition.fat += menu[item].fat;
-                    totalNutrition.protein += menu[item].protein;
-                    totalNutrition.carbs += menu[item].carbs;
-                }
-            });
-
-            document.getElementById('result').textContent = JSON.stringify(totalNutrition, null, 4);
+            document.getElementById("result").innerText = totalCalories;
         }
     </script>
 </body>
